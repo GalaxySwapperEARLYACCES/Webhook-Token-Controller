@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Control Panel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.4s, color 0.4s;
+        }
+        body.light {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        body.dark {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        header {
+            padding: 15px;
+            text-align: center;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            color: white;
+            border-bottom: 2px solid #fff;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .header-buttons {
+            margin-top: 10px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: inherit;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            padding: 12px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .settings-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+        }
+        .settings-menu h2 {
+            margin: 0 0 20px;
+        }
+        .close-settings {
+            cursor: pointer;
+            color: #dc3545;
+            float: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="light">
+    <header>
+        <h1>Discord Bot Control Panel</h1>
+        <div class="header-buttons">
+            <button id="settingsButton">⚙️</button>
+            <button id="themeToggle">Switch to Dark Mode</button>
+        </div>
+    </header>
+    <div class="container">
+        <h2>Send Messages via Discord Bot</h2>
+        
+        <label for="botToken">Your Bot Token (If You Don't Want To Use Webhook)</label>
+        <input type="text" id="botToken" placeholder="Enter your bot token">
+        
+        <label for="webhookUrl">Webhook URL (If You Don't Want To Use Token)</label>
+        <input type="text" id="webhookUrl" placeholder="Optional: Enter your webhook URL">
+        
+        <label for="channelId">Channel ID</label>
+        <input type="text" id="channelId" placeholder="Enter your channel ID">
+        
+        <label for="username">Username (optional)</label>
+        <input type="text" id="username" placeholder="Enter a username">
+        
+        <label for="avatarUrl">Avatar URL (optional)</label>
+        <input type="text" id="avatarUrl" placeholder="Enter an avatar image URL">
+        
+        <label for="messageContent">Message to Send</label>
+        <textarea id="messageContent" placeholder="Type your message here..."></textarea>
+        
+        <label for="messageCount">Number of Messages</label>
+        <input type="number" id="messageCount" min="1" value="1">
+        
+        <button id="sendButton">Send Messages</button>
+        <p id="status"></p>
+    </div>
+
+    <div class="settings-menu" id="settingsMenu">
+        <span class="close-settings" id="closeSettings">X</span>
+        <h2>Settings</h2>
+        <label for="colorScheme">Choose Color Scheme:</label>
+        <select id="colorScheme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        <button id="resetSettings">Reset to Default</button>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const settingsButton = document.getElementById('settingsButton');
+        const closeSettings = document.getElementById('closeSettings');
+        const settingsMenu = document.getElementById('settingsMenu');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+            themeToggle.textContent = body.classList.contains('dark') ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        });
+
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.style.display = 'block';
+        });
+
+        closeSettings.addEventListener('click', () => {
+            settingsMenu.style.display = 'none';
+        });
+
+        document.getElementById('colorScheme').addEventListener('change', (event) => {
+            if (event.target.value === 'dark') {
+                body.classList.add('dark');
+                body.classList.remove('light');
+                themeToggle.textContent = 'Switch to Light Mode';
+            } else {
+                body.classList.add('light');
+                body.classList.remove('dark');
+                themeToggle.textContent = 'Switch to Dark Mode';
+            }
+        });
+
+        document.getElementById('resetSettings').addEventListener('click', () => {
+            body.classList.add('light');
+            body.classList.remove('dark');
+            themeToggle.textContent = 'Switch to Dark Mode';
+            document.getElementById('colorScheme').value = 'light';
+        });
+
+        // Add your existing message sending functionality here
+    </script>
+</body>
+</html>
